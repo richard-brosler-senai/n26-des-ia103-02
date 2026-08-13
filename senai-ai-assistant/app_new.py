@@ -45,11 +45,3 @@ for tab, ele in zip(st.tabs([it["titulo"] for it in tabs]),tabs):
     with tab:
         if not ele["conteudo"] == None:
             st.write(ele["conteudo"])
-        if ele["titulo"]=="Documentos":
-            documento = st.file_uploader(
-                "Envie um arquivo"
-            )
-            if documento:
-                st.success(
-                    "Arquivo enviado"
-                )
