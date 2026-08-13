@@ -3,8 +3,9 @@ from pathlib import Path
 from playsound3 import playsound
 from dotenv import load_dotenv
 
-# Import namespaces
-
+# import namespaces
+from openai import AzureOpenAI
+from azure.identity import DefaultAzureCredential, get_bearer_token_provider
 
 
 def main():
@@ -20,10 +21,26 @@ def main():
 
 
         # Create the Azure OpenAI client
-        
+        token_provider = get_bearer_token_provider(                    
+            DefaultAzureCredential(), "https://ai.azure.com/.default"
+        )
+
+        client = AzureOpenAI(
+            azure_endpoint=endpoint,
+            azure_ad_token_provider = token_provider,
+            api_version="2025-03-01-preview"
+        )
+                
 
 
         # Generate speech and save to file
+        with client.audio.speech.with_streaming_response.create(
+                    model=model_deployment,
+                    voice="jade-hardy",
+                    input="Minha voz é meu passaporte?",
+                    instructions="Fale em um tom sarcástico",
+                ) as response:
+            response.stream_to_file(speech_file_path)
         
 
 
