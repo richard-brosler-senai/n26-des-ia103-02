@@ -1,0 +1,21 @@
+{
+  "name": "richard",
+  "version": "1.0.0",
+  "description": "Conteúdo da aula de AI-103 desenvolvido com os alunos",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/richard-brosler-senai/n26-des-ia103-02.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/richard-brosler-senai/n26-des-ia103-02/issues"
+  },
+  "homepage": "https://github.com/richard-brosler-senai/n26-des-ia103-02#readme"
+}

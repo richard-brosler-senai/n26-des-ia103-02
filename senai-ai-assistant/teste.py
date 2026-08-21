@@ -1,23 +1,13 @@
-# views/chat.py
 import streamlit as st
-from services.llm_service import chat
-from config.settings import LLM_PROVIDER
+import random
 
 def show():
-    st.title("🤖 IA Generativa")
-    st.write("LLM Provider: " + LLM_PROVIDER)
+    st.title("🤖 ChatXPT")
+           
     if "messages" not in st.session_state:
-        st.session_state.messages = [
-            {
-                "role": "system",
-                "content": """Você é um agente prestativo, atencioso e 
-suas respostas devem ser em português do Brasil.
-Seja objetivo nas respostas evitando respostas muito longas."""
-            }
-        ]
+        st.session_state.messages = []
     # Carregando as mensagens que estão armazenadas
     for message in st.session_state.messages:
-        if message["role"]== "system": continue
         with st.chat_message(
             message["role"]
         ):
@@ -49,7 +39,16 @@ Seja objetivo nas respostas evitando respostas muito longas."""
                 "content": prompt
             }
         )
-        resposta = chat(prompt,st.session_state.messages)
+        # Aqui simulamos uma resposta
+        resposta = random.choice(
+            [
+								"Olá! Como posso ajudar você hoje?",
+							  "Oi, humano! Há algo em que eu possa ajudar?",
+							  "Você precisa de ajuda?",
+            ]
+        )
+        # Poderíamos chamar assim
+        # resposta = chat(prompt)
         st.session_state.messages.append(
             {
                 "role": "assistant",
@@ -57,3 +56,6 @@ Seja objetivo nas respostas evitando respostas muito longas."""
             }
         )
         st.rerun()
+        
+if __name__ == "__main__":
+    show()

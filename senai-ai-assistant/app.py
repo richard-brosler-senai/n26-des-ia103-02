@@ -1,55 +1,34 @@
+# app.py
 import streamlit as st
 # importando biblioteca de tratamento de datas
 from datetime import datetime
+from views import dashboard, chat, rag, ocr, vision, agents, settings
 
 st.set_page_config(
     page_title="SENAI AI Assistant",
-    page_icon="./assets/senai_logo.jpg",  # Can be an emoji ("📊"), local path ("path/to/icon.png"), or URL
+    page_icon="./assets/senai_logo.jpg",
 )
 # Definições
-metricas = [
-            {"descricao":"IA Ativas", "valor":150, "variacao": None},
-            {"descricao":"Documentos", "valor":45, "variacao": None},
-            {"descricao":"Usuários", "valor":38, "variacao": None},
-            {"descricao":"Consultas IA", "valor":5, "variacao": None},
-            {"descricao":"Documentos Analisados", "valor":2, "variacao": None},
-            {"descricao":"Agentes Criados", "valor":3, "variacao": None},
-            ]
-tabs = [ 
-    {"titulo": "Chat", "conteudo": "Chat"},
-    {"titulo": "Documentos", "conteudo": "Documentos"},
-    {"titulo": "Sobre", "conteudo": """Projeto desenvolvido  
-durante o curso  
-Desenvolvimento de Agentes com IA"""},
-]
-st.title("SENAI AI Assistant")
+menu = {
+    1: {"titulo":"🏠 Dashboard", "pagina": dashboard.show },
+    2: {"titulo":"🤖 IA Generativa","pagina": chat.show},
+    3: {"titulo":"📄 RAG","pagina": rag.show},
+    4: {"titulo":"📋 OCR","pagina": ocr.show},
+    5: {"titulo":"👁️ Visão","pagina": vision.show},
+    6: {"titulo":"🕵️‍♂️ Agentes","pagina": agents.show},
+    7: {"titulo":"⚙ Configurações","pagina": settings.show},
+}
+st.logo("./assets/senai_logo.jpg")
 # Menu Lateral
 st.sidebar.write(f"""**Richard**  
 **Usuário**  
 {datetime.now().strftime("%d/%m/%Y %H:%M")}
 """)
-st.sidebar.selectbox("Menu Lateral",[
-    "🏠 Home",
-    "🤖 Chat",
-    "📄 Documentos",
-    "⚙ Configurações"]
+# Ajuste para deixar dinâmico o menu. Usamos uma função lambda
+opcao = st.sidebar.selectbox("Menu Lateral",
+        options=menu.keys(),
+        format_func=lambda x: menu[x]["titulo"],
+        index=0
     )
-# Indicadores
-st.write("## Indicadores") # MarkDown ## corresponde ao titulo 2 ou H2
-# Colunas
-for col, ele in zip(st.columns(len(metricas)), metricas):
-    with col: st.metric(ele["descricao"],ele["valor"],ele["variacao"])
-# Tabs
-# tab1, tab2, tab3 = st.tabs(["Chat","Documentos","Sobre"])
-for tab, ele in zip(st.tabs([it["titulo"] for it in tabs]),tabs):
-    with tab:
-        if not ele["conteudo"] == None:
-            st.write(ele["conteudo"])
-        if ele["titulo"]=="Documentos":
-            documento = st.file_uploader(
-                "Envie um arquivo"
-            )
-            if documento:
-                st.success(
-                    "Arquivo enviado"
-                )
+# Aqui chamamos a página se existir
+if not menu[opcao]["pagina"] == None: menu[opcao]["pagina"]()
